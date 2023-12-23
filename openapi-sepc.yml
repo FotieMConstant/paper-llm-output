@@ -1,0 +1,158 @@
+openapi: 3.0.0
+info:
+  title: Quote API
+  version: 1.0.0
+  description: |
+    The Quote API is a service that provides a collection of inspirational quotes. You can use this API to retrieve random quotes, filter quotes by keywords, and explore the wisdom of known authors.
+  termsOfService: https://geek-quote-api.vercel.app/terms
+  contact:
+    name: Your Name
+    email: your@email.com
+    url: https://yourwebsite.com
+  license:
+    name: MIT License
+    url: https://opensource.org/licenses/MIT
+
+servers:
+  - url: https://geek-quote-api.vercel.app
+    description: Production Server
+  - url: https://localhost:3000
+    description: Development Server
+
+paths:
+  /v1/quotes:
+    get:
+      summary: Get All Quotes
+      description: |
+        Retrieve a collection of inspirational quotes. This endpoint returns a list of quotes with their authors.
+      responses:
+        "200":
+          description: A list of quotes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Quote"
+
+  /v1/quote:
+    get:
+      summary: Get a Random Quote
+      description: |
+        Retrieve a random inspirational quote from our collection. The returned quote includes the author's name.
+      responses:
+        "200":
+          description: A random quote.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+
+  /v1/quote/{count}:
+    get:
+      summary: Get Multiple Random Quotes
+      description: |
+        Retrieve a specified number of random quotes from our collection. You can customize the number of quotes to receive.
+      parameters:
+        - name: count
+          in: path
+          description: Number of quotes to retrieve.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of random quotes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Quote"
+
+  /v1/quote/filter/known:
+    get:
+      summary: Get a Random Quote from Known Authors
+      description: |
+        Retrieve a random inspirational quote from a known author. This endpoint returns quotes by authors with identified names.
+      responses:
+        "200":
+          description: A random known author quote.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+
+  /v1/quote/filter/known/{count}:
+    get:
+      summary: Get Multiple Random Quotes from Known Authors
+      description: |
+        Retrieve a specified number of random quotes from known authors. You can customize the number of quotes to receive.
+      parameters:
+        - name: count
+          in: path
+          description: Number of quotes to retrieve.
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: A list of random known author quotes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Quote"
+
+  /v1/quote/filter/{keyword}:
+    get:
+      summary: Search for Quotes
+      description: |
+        Retrieve the first inspirational quote that matches a specified keyword. If you're looking for a quote on a specific topic, this endpoint can help.
+      parameters:
+        - name: keyword
+          in: path
+          description: The keyword to search for.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A matching quote.
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Quote"
+
+  /v1/quote/filter/all/{keyword}:
+    get:
+      summary: Search for Multiple Quotes
+      description: |
+        Retrieve all inspirational quotes that match a specified keyword. If you're interested in multiple quotes on a particular topic, this endpoint provides them all.
+      parameters:
+        - name: keyword
+          in: path
+          description: The keyword to search for.
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: A list of matching quotes.
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Quote"
+
+components:
+  schemas:
+    Quote:
+      type: object
+      properties:
+        quote:
+          type: string
+        author:
+          type: string
